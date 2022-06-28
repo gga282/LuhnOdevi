@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luhn Algorithm</title>
+</head>
+<body>
+    <input type="text" id="bankCard">
+    <button onclick="CardControl(bankCard)"></button>
+    <hr>
+    <div id="inputNo">
+    </div>
+    <script>
+        //1234432187658909
+        //4437121456189173
+        //4417123456789113
+        //1 3 4 2 8 6 8 0
+        //2 6 8 4 1 6 1 2 1 6
+        //2 4 
+
+        function CardControl(ArrCard){
+            inputNo.innerText='';
+            var ArrCard=document.getElementById('bankCard').value;
+            //Bosluk silme yaz
+           
+
+            if(ArrCard.length==16){
+                if(KartRakamKontrolu(ArrCard)){
+                    CardAlgorithm(ArrCard);
+                }else{
+                    inputNo.innerText="Lutfen sadece rakam giriniz";
+
+                }  
+            }
+            else{
+                inputNo.innerText="Lutfen 16 haneli banka kartini giriniz";
+            }
+
+        }
+        function CardAlgorithm(ArrCard){
+            var OddDigits=new Array(8);
+            var EvenDigits=new Array(8);
+            var OddDigits_sum=0;
+            var EvenDigits_sum=0;
+            
+            let y=0;
+            for(let i=0;i<ArrCard.length;i+=2,y+=1){
+                OddDigits[y]=parseInt(ArrCard[i]);
+                EvenDigits[y]=parseInt(ArrCard[i+1]);
+               
+            }
+
+            for(let i=0;i<OddDigits.length;i++){
+                OddDigits[i]*=2;
+                
+            }
+            let z=0;
+            let TempVar=0;
+            while(z<OddDigits.length){
+                if(parseInt(OddDigits[z]/10)==1){
+                    console.log(OddDigits[z]+" OddDigits");
+                    TempVar=parseInt(OddDigits[z]/10);
+                    OddDigits_sum+=TempVar;
+                    TempVar=parseInt(OddDigits[z]%10);
+                    OddDigits_sum+=TempVar;
+                    z++;   
+                }
+                else{
+                    OddDigits_sum+=OddDigits[z];
+                    z++;
+                }
+            }
+            console.log(OddDigits_sum);
+            let b=0;
+            while(b<EvenDigits.length){
+                EvenDigits_sum+=EvenDigits[b];
+                b++;
+            }
+            console.log(EvenDigits_sum+" ");
+            var total=OddDigits_sum+EvenDigits_sum;
+            console.log(OddDigits_sum+EvenDigits_sum);
+            var condition=LastControl(ArrCard,total);
+            inputtoHTML(condition,ArrCard);
+        }
+        function LastControl(ArrCard,total){
+                if(total%10==0){
+                    console.log("Card is Valid");
+                    return true;
+                }
+                else{
+                    console.log("Card is invalid");
+                    return false;
+                }
+        }
+        function KartRakamKontrolu(ArrCard){
+            let i=0;
+            while(i<ArrCard.length){
+                switch(ArrCard[i]){
+                    case '0':
+                        i++;
+                        break;
+                    case '1':
+                        i++;
+                        break;
+                    case '2':
+                        i++;
+                        break;
+                    case '3':
+                        i++;
+                        break;
+                    case '4':
+                        i++;
+                        break;
+                    case '5':
+                        i++;
+                        break;
+                    case '6':
+                        i++
+                        break;
+                    case '7':
+                        i++;
+                        break;
+                    case '8':
+                        i++;
+                        break;
+                    case '9':
+                        i++;
+                        break;
+                    default:
+                        i=18;
+                        break;
+                }
+                if(i==18){
+                    return false;
+                }
+                else{
+                    return true;
+                }
+        }
+    }
+        function inputtoHTML(condition,ArrCard){
+            if(condition){
+                inputNo.innerText+="Card "+ArrCard+" is Valid";
+            }
+            else{
+                inputNo.innerText+="Card "+ArrCard+" is invalid";
+            }
+        }
+    </script>
+</body>
+</html>
